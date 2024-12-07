@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { colorsheets } from '../../data/colorsheets';
+
+export function getStaticPaths() {
+  return colorsheets.map(sheet => ({
+    params: { id: sheet.id },
+    props: { sheet },
+  }));
+}
+
+const { sheet } = Astro.props;
+---
+
+<Layout 
+  title={sheet.title}
+  description={sheet.description}
+>
+  <article class="colorsheet-detail">
+    <img src={sheet.thumbnailUrl} alt={sheet.title} class="preview-image" />
+    <div class="content">
+      <h1>{sheet.title}</h1>
+      <p class="description">{sheet.description}</p>
+      <div class="tags">
+        {sheet.tags.map(tag => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+      <a href={sheet.pdfUrl} class="download-button" download>
+        Download PDF
+      </a>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .colorsheet-detail {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .preview-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+    margin: 0 auto 2rem;
+    display: block;
+  }
+
+  h1 {
+    color: #1a202c;
+    margin: 0 0 1rem;
+  }
+
+  .description {
+    color: #4a5568;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tags {
+    margin-bottom: 2rem;
+  }
+
+  .tag {
+    display: inline-block;
+    background: #e2e8f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin: 0 0.5rem 0.5rem 0;
+  }
+
+  .download-button {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s;
+  }
+
+  .download-button:hover {
+    background: var(--primary-dark);
+  }
+</style>

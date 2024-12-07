@@ -1,0 +1,58 @@
+---
+import type { Colorsheet } from '../data/colorsheets';
+import TagList from './TagList.astro';
+
+interface Props {
+  colorsheet: Colorsheet;
+}
+
+const { colorsheet } = Astro.props;
+---
+
+<a href={`/colorsheets/${colorsheet.id}`} class="colorsheet-card">
+  <img src={colorsheet.thumbnailUrl} alt={colorsheet.title} class="thumbnail" />
+  <div class="content">
+    <h2>{colorsheet.title}</h2>
+    <p>{colorsheet.description}</p>
+    <TagList tags={colorsheet.tags} />
+  </div>
+</a>
+
+<style>
+  .colorsheet-card {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .colorsheet-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #4a5568;
+    margin: 0 0 1rem;
+  }
+</style>

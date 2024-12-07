@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ColorsheetCard from '../../components/ColorsheetCard.astro';
+import { colorsheets } from '../../data/colorsheets';
+import { categories } from '../../data/categories';
+
+export function getStaticPaths() {
+  return Object.keys(categories).map(category => ({
+    params: { category },
+    props: { 
+      category: categories[category],
+      sheets: colorsheets.filter(sheet => sheet.category === category)
+    },
+  }));
+}
+
+const { category, sheets } = Astro.props;
+---
+
+<Layout 
+  title={category.title}
+  description={category.description}
+>
+  <h1>{category.title}</h1>
+  <p class="category-description">{category.description}</p>
+  
+  <div class="colorsheets-grid">
+    {sheets.map(sheet => (
+      <ColorsheetCard colorsheet={sheet} />
+    ))}
+  </div>
+</Layout>
+
+<style>
+  h1 {
+    font-size: 2.5rem;
+    color: #1a202c;
+    margin-bottom: 1rem;
+  }
+
+  .category-description {
+    color: #4a5568;
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+  }
+
+  .colorsheets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+</style>
